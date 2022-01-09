@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<!-- Designined by CodingLab | www.youtube.com/codinglabyt -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!--<title> Responsiive Admin Dashboard | CodingLab </title>-->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/payment.css">
+    <!-- Boxicons CDN Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+
+      
+  <%- include('partials/header.ejs'); -%>
+        <!--Payment-->
+        <!-- <div class="wrapper">
+            <header>Send us a Message</header>
+            <form action="#">
+              <div class="dbl-field">
+                <div class="field">
+                  <input type="text" name="name" placeholder="Enter your name">
+                  <i class='fas fa-user'></i>
+                </div>
+                <div class="field">
+                  <input type="text" name="email" placeholder="Enter your email">
+                  <i class='fas fa-envelope'></i>
+                </div>
+              </div>
+              <div class="dbl-field">
+                <div class="field">
+                  <input type="text" name="phone" placeholder="Enter your phone">
+                  <i class='fas fa-phone-alt'></i>
+                </div>
+                <div class="field">
+                  <input type="text" name="website" placeholder="Enter your website">
+                  <i class='fas fa-globe'></i>
+                </div>
+              </div>
+              <div class="message">
+                <textarea placeholder="Write your message" name="message"></textarea>
+                <i class="material-icons">message</i>
+              </div>
+              <div class="button-area">
+                <button type="submit">Send Message</button>
+                <span></span>
+              </div>
+            </form>
+          </div>
+     -->
+
+     <div class="wrapper">
+       
+     </div>
+     <div class="row">
+      <div class="col-75">
+        <div class="container">
+          <form action="/dashboard">
+    
+            <div class="row">
+              <div class="col-50">
+                <h3>Billing Address</h3>
+                <label for="fname"><i class="fa fa-user"></i> Full Name</label>
+                <input type="text" id="fname" name="firstname" placeholder="John M. Doe">
+                <label for="email"><i class="fa fa-envelope"></i> Email</label>
+                <input type="text" id="email" name="email" placeholder="john@example.com">
+                <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
+                <input type="text" id="adr" name="address" placeholder="542 W. 15th Street">
+                <label for="city"><i class="fa fa-institution"></i> City</label>
+                <input type="text" id="city" name="city" placeholder="New York">
+    
+                <div class="row">
+                  <div class="col-50">
+                    <label for="state">State</label>
+                    <input type="text" id="state" name="state" placeholder="NY">
+                  </div>
+                  <div class="col-50">
+                    <label for="zip">Zip</label>
+                    <input type="text" id="zip" name="zip" placeholder="10001">
+                  </div>
+                </div>
+              </div>
+    
+              <div class="col-50">
+                <h3>Payment</h3>
+                <label for="fname">Accepted Cards</label>
+                <div class="icon-container">
+                  <i class="fab fa-cc-visa" style="color:navy;"></i>
+                  <i class="fab fa-cc-amex" style="color:blue;"></i>
+                  <i class="fab fa-cc-mastercard" style="color:red;"></i>
+                  <i class="fab fa-cc-discover" style="color:orange;"></i>
+                </div>
+                <label for="cname">Name on Card</label>
+                <input type="text" id="cname" name="cardname" placeholder="John More Doe">
+                <label for="ccnum">Credit card number</label>
+                <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">
+                <label for="expmonth">Duration</label>
+                <input type="text" id="expmonth" name="expmonth" placeholder="daily, monthly,  or weekly">
+    
+                <div class="row">
+                  <!-- <div class="col-50">
+                    <label for="expyear">Duration</label>
+                    <input type="text" id="expyear" name="expyear" placeholder="2018">
+                  </div> -->
+                  <div class="col-50">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="352">
+                  </div>
+                </div>
+              </div>
+    
+            </div>
+            <!-- <label>
+              <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
+            </label> -->
+            <input type="submit" value="Continue to checkout" class="btn">
+          </form>
+        </div>
+      </div>
+    
+     
+    </div>
+    
+    </section>
+
+  <script>
+   let sidebar = document.querySelector(".sidebar");
+let sidebarBtn = document.querySelector(".sidebarBtn");
+sidebarBtn.onclick = function() {
+  sidebar.classList.toggle("active");
+  if(sidebar.classList.contains("active")){
+  sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+}else
+  sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+}
+ </script>
+
+</body>
+</html>
+

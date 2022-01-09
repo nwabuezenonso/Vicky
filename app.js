@@ -1,10 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose')
-// const Authrouters = require('./routes/authRoutes');
-// const cookieParser = require('cookie-parser');
-// const { requireAuth, checkUser } = require('./middleware/authmiddleware'); 
-// const { sendWelcomeEmail } = require('./emails/mail')
-// const sendMail = require('./mail')
+const User = require('./model/User')
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const { requireAuth, checkUser } = require('./middleware/authMiddleware');
 
 //set up the express function
 const app = express()
@@ -12,59 +11,83 @@ const app = express()
 // middleware
 app.use(express.static('public'));
 app.use(express.json());
-// app.use(cookieParser());
+app.use(cookieParser())
+
 
 // view engine
-// app.set('view engine', 'ejs');
+app.set('view engine', 'ejs');
 
 // database connection
-// const dbURI = 'mongodb://localhost/user'
-// mongoose.connect(dbURI, {useNewUrlParser: true , useUnifiedTopology: true})
-//   .then((result) => app.listen(3000, () => {'Server is running on port 3000'}))
-//   .catch((err) => console.log(err));
+const dbURI = 'mongodb://localhost/Donvicky'
+mongoose.connect(dbURI, {useNewUrlParser: true , useUnifiedTopology: true})
+  .then((result) => app.listen(3000, () => {'Server is running on port 3000'}))
+  .catch((err) => console.log(err));
 
 //routes
-// app.get('*', checkUser)
+
+app.get('*', checkUser);
 app.get('/', (req, res)=>{
-  res.sendFile('./public/html/index.html' , {root: __dirname}) 
+  res.render('index' ) 
 })
 
-app.get('/signup', (req, res)=>{
-  res.sendFile('./public/html/signup.html', {root: __dirname})
+app.get('/dashboard', requireAuth, (req, res)=>{
+  res.render('dashboard' ) 
 })
 
-app.get('/dashboard', (req, res)=>{
-  res.sendFile('./public/html/dashboard.html', {root: __dirname})
+app.get('/payment', requireAuth,  (req, res)=>{
+  res.render('payment' ) 
 })
 
-app.get('/payment', (req, res)=>{
-  res.sendFile('./public/html/payment.html', {root: __dirname})
+app.get('/signup', (req, res) => {
+  res.render('signup')
 })
 
-app.get('/message', (req, res) =>{
-  res.sendFile('./public/html/messages.html', {root: __dirname})
+app.get('/login', (req, res) => {
+  res.render('login')
 })
-// app.get('/member',requireAuth,  (req, res) =>{
-//   res.render('member')
-// })
-// app.post("/email", (req, res) =>{
-//   const {email, subject} = req.body
-//   console.log('Data: ', req.body)
-  
-//   sendMail(email, subject , function(err,data){
-//       if(err){
-//           res.status(500).json({message: 'Internal Error'});
-//       }else{
-//           res.json({message: 'Email sent!!!!'})
-//       }
-//   })
-//   res.json({message: 'Message recieved!'})
-// })
-// app.use(Authrouters);
 
-//Error routes
-// app.use((req, res)=>{
-//   res.status(404).render('404')
-// })
+//Auth routes
+const maxAge = 3 * 24 * 60 * 60;
+const createToken = (id) => {
+  return jwt.sign({ id }, 'net ninja secret', {
+    expiresIn: maxAge
+  });
+};
 
-app.listen(3000, () => {'Server is running on port 3000'})
+app.post('/signup',  async(req, res) => {
+
+  const {user_, pass, city_, state_, number_, email_, last, first  } = req.body
+
+  // console.log(email_content, password_content)
+  try {
+    const user = await User.create({user_, pass, city_, state_, number_, email_, last, first  });
+    const token = createToken(user._id);
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(201).json({ user: user._id});
+  }
+  catch(err) {
+    console.log(err)
+    res.status(400).json({ err }) 
+  }
+})
+
+app.post('/login', async(req, res) => {
+  const { user_, pass } = req.body;
+
+  try {
+    const user = await User.login(user_, pass);
+    const token = createToken(user._id);
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(200).json({ user: user._id });
+  } 
+  catch (err) {
+    // const errors = handleErrors(err);
+    res.status(400).send( err);
+  }
+})
+
+
+app.get('/logout',(req, res) =>{
+  res.cookie('jwt', ' ', { maxAge: 1});
+  res.redirect('/');
+})

@@ -1,3 +1,5 @@
+// const { STATES } = require("mongoose");
+
 $(document).ready(function(){
     $(window).scroll(function(){
         // sticky navbar on scroll script
@@ -71,3 +73,6 @@ $(document).ready(function(){
         }
     });
 });
+
+  
+    
